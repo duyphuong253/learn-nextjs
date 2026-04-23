@@ -1,172 +1,169 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useState, useRef, useEffect } from 'react';
 import { MapPin, Sun, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLLIElement>(null);
+
+    // 👉 Click outside để đóng dropdown
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+            setIsDropdownOpen(false);
+        }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // ✅ Danh sách link chuẩn
+    const medicalLinks = [
+        { label: "Y tế tại nhà", href: "/y-te-tai-nha" },
+        { label: "Xét nghiệm", href: "/xet-nghiem" },
+        { label: "Tiêm chủng", href: "/tiem-chung" },
+        { label: "Phòng mạch", href: "/phong-mach" },
+        { label: "Phòng khám", href: "/phong-kham" },
+        { label: "Bệnh viện tư", href: "/benh-vien-tu" },
+        { label: "Bệnh viện công", href: "/benh-vien-cong" },
+    ];
 
     return (
-        <nav className="bg-white border-b border-gray-100 sticky top-0 z-50" role="navigation">
-        <div className="max-w-7xl mx-auto px-4">
+        <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+        
+        {/* Container */}
+        <div className="max-w-[1200px] mx-auto px-4">
             <div className="h-16 flex items-center justify-between">
 
-            {/* Logo + Location */}
-            <div className="flex items-center gap-8">
-                <Link href="/" className="flex items-center gap-2">
+            {/* LEFT */}
+            <div className="flex items-center gap-4 md:gap-8">
+                
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-2 shrink-0">
                 <div className="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-2xl">🐊</span>
+                    <span className="text-white text-xl">🐊</span>
                 </div>
-                <span className="text-2xl font-bold text-emerald-600 tracking-tight">
+                <span className="text-lg md:text-2xl font-bold text-emerald-600">
                     Review.health
                 </span>
                 </Link>
 
-                <button className="hidden md:flex items-center gap-2 bg-gray-50 hover:bg-gray-100 px-4 py-2 rounded-3xl text-sm border border-gray-200">
+                {/* Location */}
+                <button className="hidden lg:flex items-center gap-2 bg-gray-50 hover:bg-gray-100 px-4 py-2 rounded-3xl text-sm border border-gray-200">
                 <MapPin size={18} className="text-emerald-600" />
-                <span className="font-medium text-gray-700">Thành phố Hà Nội</span>
+                <span className="font-medium text-gray-700">
+                    Hà Nội
+                </span>
                 </button>
             </div>
 
-            {/* Desktop Menu */}
-            <ul className="hidden md:flex items-center gap-8">
+            {/* DESKTOP MENU */}
+            <ul className="hidden md:flex items-center gap-6 lg:gap-8">
+                
                 <li>
-                <Link href="/" className="font-medium text-gray-700 hover:text-emerald-600 transition-colors">
+                <Link href="/" className="font-medium text-gray-700 hover:text-emerald-600">
                     Trang chủ
                 </Link>
                 </li>
 
-                {/* Dropdown Cơ sở y tế - Dùng Click thay vì Hover */}
-                <li className="relative">
+                {/* Dropdown */}
+                <li className="relative" ref={dropdownRef}>
                 <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="flex items-center gap-1 font-medium text-gray-700 hover:text-emerald-600 transition-colors focus:outline-none"
+                    className="flex items-center gap-1 font-medium text-gray-700 hover:text-emerald-600"
                 >
                     Cơ sở y tế
-                    <span className={`text-xs transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                    <span className={`text-xs transition ${isDropdownOpen ? 'rotate-180' : ''}`}>
                     ▼
                     </span>
                 </button>
 
-                {/* Dropdown Menu */}
                 {isDropdownOpen && (
-                    <div className="absolute top-12 left-0 bg-white shadow-xl rounded-2xl py-3 px-2 w-72 border border-gray-100 z-50">
-                    <Link 
-                        href="/y-te-tai-nha" 
-                        className="block px-4 py-3 hover:bg-gray-50 rounded-xl"
+                    <div className="absolute top-12 left-0 w-72 bg-white shadow-xl rounded-2xl p-2 border">
+                    {medicalLinks.map((item) => (
+                        <Link
+                        key={item.href}
+                        href={item.href}
+                        className="block px-4 py-3 rounded-xl hover:bg-gray-50"
                         onClick={() => setIsDropdownOpen(false)}
-                    >
-                        Y tế tại nhà
-                    </Link>
-                    <Link 
-                        href="/xet-nghiem" 
-                        className="block px-4 py-3 hover:bg-gray-50 rounded-xl"
-                        onClick={() => setIsDropdownOpen(false)}
-                    >
-                        Xét nghiệm
-                    </Link>
-                    <Link 
-                        href="/tiem-chung" 
-                        className="block px-4 py-3 hover:bg-gray-50 rounded-xl"
-                        onClick={() => setIsDropdownOpen(false)}
-                    >
-                        Tiêm chủng
-                    </Link>
-                    <Link 
-                        href="/phong-mach" 
-                        className="block px-4 py-3 hover:bg-gray-50 rounded-xl"
-                        onClick={() => setIsDropdownOpen(false)}
-                    >
-                        Phòng mạch
-                    </Link>
-                    <Link 
-                        href="/phong-kham" 
-                        className="block px-4 py-3 hover:bg-gray-50 rounded-xl"
-                        onClick={() => setIsDropdownOpen(false)}
-                    >
-                        Phòng khám
-                    </Link>
-                    <Link 
-                        href="/benh-vien-tu" 
-                        className="block px-4 py-3 hover:bg-gray-50 rounded-xl"
-                        onClick={() => setIsDropdownOpen(false)}
-                    >
-                        Bệnh viện tư
-                    </Link>
-                    <Link 
-                        href="/benh-vien-cong" 
-                        className="block px-4 py-3 hover:bg-gray-50 rounded-xl"
-                        onClick={() => setIsDropdownOpen(false)}
-                    >
-                        Bệnh viện công
-                    </Link>
+                        >
+                        {item.label}
+                        </Link>
+                    ))}
                     </div>
                 )}
                 </li>
 
                 <li>
-                <Link href="/danh-muc-bai-viet" className="font-medium text-gray-700 hover:text-emerald-600 transition-colors">
-                    Danh mục bài viết
+                <Link href="/danh-muc-bai-viet" className="font-medium text-gray-700 hover:text-emerald-600">
+                    Danh mục
                 </Link>
                 </li>
 
                 <li>
-                <Link href="/bai-viet" className="font-medium text-gray-700 hover:text-emerald-600 transition-colors">
+                <Link href="/bai-viet" className="font-medium text-gray-700 hover:text-emerald-600">
                     Bài viết
                 </Link>
                 </li>
             </ul>
 
-            {/* Right side */}
-            <div className="flex items-center gap-3">
+            {/* RIGHT */}
+            <div className="flex items-center gap-2 md:gap-3">
+                
                 <Link
                 href="/gui-yeu-cau"
-                className="hidden md:flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-3xl font-medium transition-all"
+                className="hidden lg:flex bg-emerald-600 text-white px-4 py-2 rounded-3xl text-sm font-medium hover:bg-emerald-700"
                 >
                 + Gửi yêu cầu
                 </Link>
 
                 <Link
                 href="/dang-nhap"
-                className="flex items-center gap-2 border border-gray-300 hover:border-gray-400 px-4 py-2 rounded-3xl text-sm font-medium transition-colors"
+                className="flex items-center gap-2 border px-3 py-2 rounded-3xl text-sm"
                 >
-                <img 
-                    src='gmail.png'
-                    alt="Google" 
-                    width={20} 
-                    height={20}
-                    className="rounded-sm"
-                    /><span>Đăng nhập</span> 
+                <Image src="/gmail.png" alt="Google" width={18} height={18} />
+                <span className="hidden sm:inline">Đăng nhập</span>
                 </Link>
 
-                <button className="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-gray-100 transition-colors">
-                <Sun size={20} className="text-gray-600" />
+                <button className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100">
+                <Sun size={20} />
                 </button>
 
                 <button
                 className="md:hidden w-10 h-10 flex items-center justify-center"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
                 </button>
             </div>
+
             </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-            <div className="md:hidden border-t bg-white">
-            <ul className="px-4 py-6 flex flex-col gap-6 text-lg">
-                <li><Link href="/" onClick={() => setIsMobileMenuOpen(false)}>Trang chủ</Link></li>
-                <li><Link href="/co-so-y-te" onClick={() => setIsMobileMenuOpen(false)}>Cơ sở y tế</Link></li>
-                <li><Link href="/y-te-tai-nha" onClick={() => setIsMobileMenuOpen(false)}>Y tế tại nhà</Link></li>
-                <li><Link href="/danh-muc-bai-viet" onClick={() => setIsMobileMenuOpen(false)}>Danh mục bài viết</Link></li>
-                <li><Link href="/bai-viet" onClick={() => setIsMobileMenuOpen(false)}>Bài viết</Link></li>
+        {/* MOBILE MENU */}
+        <div
+            className={`md:hidden overflow-hidden transition-all duration-300 ${
+            isMobileMenuOpen ? 'max-h-[500px] border-t' : 'max-h-0'
+            }`}
+        >
+            <ul className="px-4 py-4 flex flex-col gap-4">
+            <li><Link href="/">Trang chủ</Link></li>
+
+            {medicalLinks.map((item) => (
+                <li key={item.href}>
+                <Link href={item.href}>
+                    {item.label}
+                </Link>
+                </li>
+            ))}
+
+            <li><Link href="/bai-viet">Bài viết</Link></li>
             </ul>
-            </div>
-        )}
+        </div>
         </nav>
     );
 }

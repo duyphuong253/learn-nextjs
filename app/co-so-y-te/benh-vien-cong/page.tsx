@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function PhongMachPage() {
+export default function BenhVienCongPage() {
     return (
         <div className="min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 py-8">
@@ -9,11 +9,11 @@ export default function PhongMachPage() {
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
             <Link href="/" className="hover:text-emerald-600">Trang chủ</Link>
             <span>›</span>
-            <span className="text-emerald-700 font-medium">Loại hình: xet-nghiem</span>
+            <span className="text-emerald-700 font-medium">Loại hình: benh-vien-cong</span>
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl font-bold text-gray-900 mb-1">xet-nghiem</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-1">benh-vien-cong</h1>
             <p className="text-gray-600 text-lg">Tìm thấy 49 cơ sở y tế</p>
 
             {/* Danh sách cơ sở y tế */}
@@ -22,12 +22,12 @@ export default function PhongMachPage() {
             {/* Card 1 */}
             <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all">
                 <div className="relative h-52">
-                {/* <Image 
-                    src="https://images.unsplash.com/photo-1551076805-e1869033e417?w=800" 
-                    alt="Gentis" 
+                <Image 
+                    src="/phongkham.jpg" 
+                    alt="Diag" 
                     fill 
                     className="object-cover" 
-                /> */}
+                />
                 </div>
                 <div className="p-5">
                 <h3 className="font-semibold text-lg leading-tight mb-1">
@@ -47,12 +47,12 @@ export default function PhongMachPage() {
             {/* Card 2 */}
             <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all">
                 <div className="relative h-52">
-                {/* <Image 
-                    src="https://images.unsplash.com/photo-1519494026892-80a3d5e8b1e4?w=800" 
+                <Image 
+                    src="/phongkham.jpg" 
                     alt="Diag" 
                     fill 
                     className="object-cover" 
-                /> */}
+                />
                 </div>
                 <div className="p-5">
                 <h3 className="font-semibold text-lg leading-tight mb-1">
@@ -72,12 +72,12 @@ export default function PhongMachPage() {
             {/* Card 3 */}
             <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all">
                 <div className="relative h-52">
-                {/* <Image 
-                    src="https://images.unsplash.com/photo-1559757148-5e995136c87b?w=800" 
+                <Image 
+                    src="/phongkham.jpg" 
                     alt="Diag" 
                     fill 
                     className="object-cover" 
-                /> */}
+                />
                 </div>
                 <div className="p-5">
                 <h3 className="font-semibold text-lg leading-tight mb-1">
